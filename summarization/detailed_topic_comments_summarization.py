@@ -301,6 +301,7 @@ def run_detailed():
             comments = load_data(t, total_t)
             summary = get_summary(comments)
             save_summary(summary, total_t, t)
+    global model
     del model
     import gc
     gc.collect()

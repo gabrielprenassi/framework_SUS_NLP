@@ -10,7 +10,7 @@ def run_classification(number_of_examples):
 
     prompt_dir = './sentiment_analysis/resources/prompt/prompt.json'
     llm_method = 'Llama3.1-I'
-    outfilename = './sentiment_analysis/resources/outLLM/sentiment_analysis/1_few_shot'
+    outfilename = './sentiment_analysis/resources/outLLM/sentiment_analysis/sentiment_analysis.json'
     seed = 2024
 
     info = {}

@@ -186,7 +186,7 @@ def main_app():
     df_results = df[selected_columns].copy()
     df_results = df_results[df_results["comments"].notna()].reset_index(drop=True)
 
-    with open('sentiment_analysis/resources/outLLM/sentiment_analysis/prompt4/3_few_shot/classification.json', "r") as file:
+    with open('./sentiment_analysis/resources/outLLM/sentiment_analysis/sentiment_analysis.json', "r") as file:
         classification_data = json.load(file)
     y_pred_text = classification_data.get("y_pred_text", [])
     df_results["results"] = y_pred_text[:len(df_results)]

@@ -107,6 +107,7 @@ def run_concise():
             text = load_data(t, total_t)
             summary = get_summary(text)
             save_summary(summary, total_t, t)
+    global model
     del model
     import gc
     gc.collect()
