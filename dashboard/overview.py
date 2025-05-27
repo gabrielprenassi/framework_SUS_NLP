@@ -47,7 +47,7 @@ def calculate_means(df):
 
 def calculate_sentiment_totals(df_topic_modeling, topic_amount):
     df_results = load_data('data/results.csv')
-    df_topic_modeling = load_data(f'topic_modeling/data_num_topics/{topic_amount}/documents_scores.csv')
+    df_topic_modeling = load_data(f'topicmodeling/data_num_topics/{topic_amount}/documents_scores.csv')
 
     class_count_df = count_classes_per_topic(df_results, df_topic_modeling)
     class_count_df["total"] = (
@@ -154,7 +154,7 @@ def create_percentage_bar_chart(positive_feedbacks, criticisms, suggestions, not
 
 def render_topic_words(topic_number, topic_amount, x=0, title=""):
     try:
-        with open(f'topic_modeling/data_num_topics/{topic_amount}/topics_{topic_amount}.json', 'r') as file:
+        with open(f'topicmodeling/data_num_topics/{topic_amount}/topics_{topic_amount}.json', 'r') as file:
             topics_model = json.load(file)
     except Exception as e:
         st.error(f"Error loading topic data: {e}")
@@ -214,7 +214,7 @@ def render_overview_topics(topic_amount):
         )
 
     df_results = load_data('data/results.csv')
-    df_topic_modeling = load_data(f'topic_modeling/data_num_topics/{topic_amount}/documents_scores.csv')
+    df_topic_modeling = load_data(f'topicmodeling/data_num_topics/{topic_amount}/documents_scores.csv')
     class_count_df = count_classes_per_topic(df_results, df_topic_modeling)
     grouped, _, _ = calculate_sentiment_totals(df_topic_modeling, topic_amount)
 
@@ -291,7 +291,7 @@ def render_specific_topic(topic_number, topic_amount):
         topic_summary = "No summary available for this topic."
 
     df_results = load_data('data/results.csv')
-    df_topic_modeling = load_data(f'topic_modeling/data_num_topics/{topic_amount}/documents_scores.csv')
+    df_topic_modeling = load_data(f'topicmodeling/data_num_topics/{topic_amount}/documents_scores.csv')
     class_count_df = count_classes_per_topic(df_results, df_topic_modeling)
     grouped, _, _ = calculate_sentiment_totals(df_topic_modeling, topic_amount)
 
@@ -435,7 +435,7 @@ def render_topic_analysis(most_negative_topic, most_positive_topic, grouped, top
     )
 
     df_results = load_data('data/results.csv')
-    df_topic_modeling = load_data(f'topic_modeling/data_num_topics/{topic_amount}/documents_scores.csv')
+    df_topic_modeling = load_data(f'topicmodeling/data_num_topics/{topic_amount}/documents_scores.csv')
     class_count_df = count_classes_per_topic(df_results, df_topic_modeling)
 
     with col1:
@@ -544,7 +544,7 @@ def load_classification_data(file_path):
 
 def render_overview(df, topic_amount):
     _, max_item, min_item, original_means = calculate_means(df)
-    df_topic_modeling = load_data(f'topic_modeling/data_num_topics/{topic_amount}/Resumo_Topicos_Dominantes.csv')
+    df_topic_modeling = load_data(f'./topicmodeling/data_num_topics/{topic_amount}/Resumo_Topicos_Dominantes.csv')
     grouped, most_positive_topic, most_negative_topic = calculate_sentiment_totals(df_topic_modeling, topic_amount)
 
     st.markdown(

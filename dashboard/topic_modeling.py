@@ -133,7 +133,6 @@ def get_topic_summary(topic_number, topic_amount):
         unsafe_allow_html=True
     )
 
-@st.cache_data
 def load_data(path_topic_model, path_topic_modeling, data_sentiment_path):
     return (
         json.load(open(path_topic_model, 'r')),
@@ -143,8 +142,8 @@ def load_data(path_topic_model, path_topic_modeling, data_sentiment_path):
             
 def render(topic_number, topic_amount):
     topics_model, df_topic_modeling, df_data = load_data(
-        path_topic_model=f'topic_modeling/data_num_topics/{topic_amount}/topics_{topic_amount}.json',
-        path_topic_modeling=f'topic_modeling/data_num_topics/{topic_amount}/documents_scores.csv',
+        path_topic_model=f'topicmodeling/data_num_topics/{topic_amount}/topics_{topic_amount}.json',
+        path_topic_modeling=f'topicmodeling/data_num_topics/{topic_amount}/documents_scores.csv',
         data_sentiment_path='data/dataFrame.csv'
     )
 
@@ -155,6 +154,8 @@ def render(topic_number, topic_amount):
     df_data = df_data[df_data['ID'].isin(ids)]
 
     df_clean_text = pd.read_csv("data/results.csv")
+    df_data['ID'] = df_data['ID'].astype(str)
+    df_clean_text['ID'] = df_clean_text['ID'].astype(str)
     df_data = df_data.merge(df_clean_text[['ID', 'clean_text']], how='left', on='ID')
 
     word_and_importance = topics_model[topic_number]
@@ -176,8 +177,12 @@ def render(topic_number, topic_amount):
     with tab3:
         docs_by_word(labels[::-1], df_topic_modeling, topic_number)
     with tab4:
+        if 'clean_text' not in df_clean_text.columns:
+            st.warning("clean_text column missing in results.csv. Skipping merge.")
+        else:
+            df_data = df_data.merge(df_clean_text[['ID', 'clean_text']], how='left', on='ID')
         multiple_choice_answers.render(
-            df_data.drop(columns=['comments']),
+            df_data,
             topic_modeling=True,
             labels=labels[::-1]
         )

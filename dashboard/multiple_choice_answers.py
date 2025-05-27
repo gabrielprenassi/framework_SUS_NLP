@@ -93,8 +93,8 @@ def render(df, topic_modeling=False, labels=[]):
             ['Consider all comments'] + labels,
             key='aba3'
         )
-        if word != 'Consider all comments':
-            df = df[df['clean_text'].str.contains(word, case=False, na=False)]
+        if 'clean_text' in df.columns and word != 'Consider all comments':
+            df = df[df['clean_text'].fillna('').str.contains(word, case=False, na=False)]
     print_information(
         number_of_users=len(df),
         mean=df[selected_question].mean(),

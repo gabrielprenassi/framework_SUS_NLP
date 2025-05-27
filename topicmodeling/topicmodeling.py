@@ -117,6 +117,12 @@ def run_topic_modeling():
     model.dominant_topics(use_df['clean_text'], f'./data_num_topics/{num_topics}/', use_df['ID'].tolist())
     model.save_json(f'./topicmodeling/data_num_topics/{num_topics}/topics_{num_topics}.json')
 
+    df = pd.read_csv(f'./topicmodeling/data_num_topics/{num_topics}/Topicos_Dominantes.csv', sep='|')
+    df['document_score'] = df[['Topico 0', 'Topico 1', 'Topico 2', 'Topico 3', 'Topico 4']].max(axis=1)
+    result_df = df[['dominant_topic', 'id', 'document_score']]
+    result_df.rename(columns={'id': 'document_id'}, inplace=True)
+    result_df.to_csv(f'./topicmodeling/data_num_topics/{num_topics}/documents_scores.csv', index=False)
+
     num_topics = 10
     params = {
         'nr_topics': num_topics,
@@ -132,6 +138,12 @@ def run_topic_modeling():
     model.dominant_topics(use_df['clean_text'], f'./data_num_topics/{num_topics}/', use_df['ID'].tolist())
     model.save_json(f'./topicmodeling/data_num_topics/{num_topics}/topics_{num_topics}.json')
 
+    df = pd.read_csv(f'./topicmodeling/data_num_topics/{num_topics}/Topicos_Dominantes.csv', sep='|')
+    df['document_score'] = df[['Topico 0', 'Topico 1', 'Topico 2', 'Topico 3', 'Topico 4', 'Topico 5', 'Topico 6', 'Topico 7', 'Topico 8', 'Topico 9']].max(axis=1)
+    result_df = df[['dominant_topic', 'id', 'document_score']]
+    result_df.rename(columns={'id': 'document_id'}, inplace=True)
+    result_df.to_csv(f'./topicmodeling/data_num_topics/{num_topics}/documents_scores.csv', index=False)
+
     num_topics = 15
     params = {
         'nr_topics': num_topics,
@@ -146,3 +158,9 @@ def run_topic_modeling():
     model.save_txt(f'./topicmodeling/data_num_topics/{num_topics}/topics.txt')
     model.dominant_topics(use_df['clean_text'], f'./data_num_topics/{num_topics}/', use_df['ID'].tolist())
     model.save_json(f'./topicmodeling/data_num_topics/{num_topics}/topics_{num_topics}.json')
+
+    df = pd.read_csv(f'./topicmodeling/data_num_topics/{num_topics}/Topicos_Dominantes.csv', sep='|')
+    df['document_score'] = df[['Topico 0', 'Topico 1', 'Topico 2', 'Topico 3', 'Topico 4', 'Topico 5', 'Topico 6', 'Topico 7', 'Topico 8', 'Topico 9', 'Topico 10', 'Topico 11', 'Topico 12', 'Topico 13', 'Topico 14']].max(axis=1)
+    result_df = df[['dominant_topic', 'id', 'document_score']]
+    result_df.rename(columns={'id': 'document_id'}, inplace=True)
+    result_df.to_csv(f'./topicmodeling/data_num_topics/{num_topics}/documents_scores.csv', index=False)

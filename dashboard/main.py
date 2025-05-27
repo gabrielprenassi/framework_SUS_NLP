@@ -16,7 +16,7 @@ from preprocessing.preprocessing import preprocess_text_pipeline
 from topicmodeling.topicmodeling import run_topic_modeling
 from sentiment_analysis.run_llms_classifiication import run_classification
 
-st.set_page_config(page_title="MGI - Prototype", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Framework - SUS", layout="wide", initial_sidebar_state="expanded")
 CSV_UPLOAD_FOLDER = "data"
 TXT_UPLOAD_FOLDER = "txt_data"
 os.makedirs(CSV_UPLOAD_FOLDER, exist_ok=True)
@@ -145,52 +145,39 @@ def load_all_topic_titles(topic_amount):
     return [get_topic_title(topic_amount, topic_number) for topic_number in range(topic_amount)]
 
 def main_app():
-    selected_quantity = st.session_state.get("selected_quantity_per_label")
-    
-    st.info("Starting: Preprocessing DataFrame...")
-    pre_processing_df()
-    st.success("DataFrame preprocessing completed.")
-
-    st.info("Starting: Text Preprocessing Pipeline...")
-    preprocess_text_pipeline()
-    st.success("Text preprocessing completed.")
-
-    st.info("Starting: Topic Modeling...")
-    run_topic_modeling()
-    st.success("Topic modeling completed.")
-
-    st.info("Starting: Sentiment Classification...")
-    run_classification(number_of_examples=selected_quantity)
-    st.success("Classification completed.")
-
-    st.info("Starting: Detailed Summarization...")
-    from summarization.detailed_topic_comments_summarization import run_detailed
-    run_detailed()
-    st.success("Detailed summarization completed.")
-
-    st.info("Starting: Concise Summarization...")
-    from summarization.concise_topic_comments_summarization import run_concise
-    run_concise()
-    st.success("Concise summarization completed.")
-
-    st.info("Starting: Single-sentence Summarization...")
-    from summarization.single_sentence_topic_summarization import run_single
-    run_single()
-    st.success("Single-sentence summarization completed.")
-
-    st.info("Loading DataFrame for results display...")
+    if "processing_done" not in st.session_state:
+        st.session_state["processing_done"] = False
 
     df = load_data('data/dataFrame.csv')
 
-    selected_columns = ["ID", "sus", "comments"]
+    if not st.session_state["processing_done"]:
+        with st.spinner("Processing all steps... This may take a while..."):
+            selected_quantity = st.session_state.get("selected_quantity_per_label")
+
+            pre_processing_df()
+            preprocess_text_pipeline()
+            df = load_data('data/dataFrame.csv')
+            #run_topic_modeling()
+            #run_classification(number_of_examples=selected_quantity)
+            #from summarization.detailed_topic_comments_summarization import run_detailed
+            #run_detailed()
+            #from summarization.concise_topic_comments_summarization import run_concise
+            #run_concise()
+            #from summarization.single_sentence_topic_summarization import run_single
+            #run_single()
+
+            st.session_state["processing_done"] = True
+        st.success("All processing completed!")
+        st.rerun() 
+
+    selected_columns = ["ID", "sus", "comments", "clean_text"]
     df_results = df[selected_columns].copy()
     df_results = df_results[df_results["comments"].notna()].reset_index(drop=True)
 
-    with open('./sentiment_analysis/resources/outLLM/sentiment_analysis/sentiment_analysis.json', "r") as file:
+    with open('./sentiment_analysis/resources/outLLM/sentiment_analysis.json', "r") as file:
         classification_data = json.load(file)
     y_pred_text = classification_data.get("y_pred_text", [])
     df_results["results"] = y_pred_text[:len(df_results)]
-
     df_results.to_csv('data/results.csv', index=False)
 
     st.sidebar.title("Navigation")
@@ -211,6 +198,7 @@ def main_app():
         topic_number = topic_titles.index(selected_topic_title)
         topic_modeling.render(topic_number=str(topic_number), topic_amount=topic_amount)
 
+
 if "csv_uploaded" not in st.session_state:
     st.session_state["csv_uploaded"] = False
 if "sentiment_uploaded" not in st.session_state:
@@ -229,9 +217,14 @@ if not (st.session_state["csv_uploaded"] and st.session_state["sentiment_uploade
 if st.session_state["proceed_main"]:
     main_app()
 
-if st.session_state["csv_uploaded"] and st.session_state["sentiment_uploaded"] and st.session_state["stopwords_uploaded"]:
+if (
+    st.session_state["csv_uploaded"] 
+    and st.session_state["sentiment_uploaded"] 
+    and st.session_state["stopwords_uploaded"]
+    and not st.session_state.get("processing_done", False)  
+):
     st.subheader("Ready to proceed?")
     proceed = st.button("Proceed to Analysis")
     if proceed:
         st.session_state["proceed_main"] = True
-        st.rerun() 
+        st.rerun()
