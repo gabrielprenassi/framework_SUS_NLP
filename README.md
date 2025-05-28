@@ -12,6 +12,10 @@ All required dependencies are listed in the `requirements.txt` file. Install the
 ```
 bash install.sh
 ```
+Activate the virtual environment using:
+```
+source venv/bin/activate
+```
 Run the code with **Streamlit** using:
 ```
 streamlit run dashboard/main.py
@@ -21,7 +25,7 @@ streamlit run dashboard/main.py
 
 As input, you must provide a `.csv` file containing 12 columns. Each row should represent a single evaluation. The first column must contain an anonymized and unique user identifier. The following 10 columns should correspond to the SUS statements, already formatted on a Likert scale. The final column should contain optional textual comments provided by users.
 
-In addition, you must provide a `.txt` file containing sample comments along with their sentiment analysis labels.
+In addition, you must provide a `.txt` file containing sample comments along with their sentiment analysis labels. You can choose the number of examples for the sentiment analysis prompt. After that, the process will begin.
 
 ### ⚙️ _NLP Modules_
 
@@ -32,6 +36,8 @@ This project includes three NLP modules:
    Determines the sentiment of each comment based on the classes defined in the input `.txt` file.
 3. **Summarization**  
    Automatically generates summaries of the comments within each topic.
+
+To use the LLaMA models, you must have an access key and add it to `sentiment_analysis/src/llms/token_id.py`. You can adapt the prompts to fit your specific use case.
 
 ### 💭 _Citation_
 

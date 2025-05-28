@@ -173,3 +173,10 @@ settings/fsllm/
 !prompt*.py
 *datasets*
 fsllm/
+data/
+txt_data/
+topicmodeling/data_num_topics/
+topicmodeling/data_topic_modeling/
+sentiment_analysis/resources/prompt/prompt.json
+sentiment_analysis/resources/outLLM/sentiment_analysis.json
+summarization/outLLM/

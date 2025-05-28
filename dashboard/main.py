@@ -157,14 +157,14 @@ def main_app():
             pre_processing_df()
             preprocess_text_pipeline()
             df = load_data('data/dataFrame.csv')
-            #run_topic_modeling()
-            #run_classification(number_of_examples=selected_quantity)
-            #from summarization.detailed_topic_comments_summarization import run_detailed
-            #run_detailed()
-            #from summarization.concise_topic_comments_summarization import run_concise
-            #run_concise()
-            #from summarization.single_sentence_topic_summarization import run_single
-            #run_single()
+            run_topic_modeling()
+            run_classification(number_of_examples=selected_quantity)
+            from summarization.detailed_topic_comments_summarization import run_detailed
+            run_detailed()
+            from summarization.concise_topic_comments_summarization import run_concise
+            run_concise()
+            from summarization.single_sentence_topic_summarization import run_single
+            run_single()
 
             st.session_state["processing_done"] = True
         st.success("All processing completed!")
