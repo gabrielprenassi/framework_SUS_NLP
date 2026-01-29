@@ -43,9 +43,11 @@ To use the LLaMA models, you must have an access key and add it to `sentiment_an
 
 If you used this research or code in your work, please cite it.
 ```bibtex
-@article{TODO,
-  author = {TODO},
-  title = {TODO},
-  journal = {TODO},
-  year = {TODO}
+@inproceedings{prenassi2025enhanced,
+  title={Enhanced Analysis of User Perceptions Through Natural Language Processing Approaches},
+  author={Prenassi, Gabriel and Machado, Ana and Freitas, Davi and Lima, Andr{\'e} and Prates, Raquel O and Landim, Antonio and Rocha, Leonardo and Tuler, Elisa},
+  booktitle={IFIP Conference on Human-Computer Interaction},
+  pages={453--476},
+  year={2025},
+  organization={Springer}
 }
